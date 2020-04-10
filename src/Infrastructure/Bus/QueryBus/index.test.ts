@@ -1,4 +1,4 @@
-import container from '../../DependencyInjection/Container/instance';
+import diContainer from '../../DependencyInjection/Container/instance';
 import QueryBus from './QueryBus';
 import QueryBusConfigInterface from './config/QueryBusConfigInterface';
 import QueryInterface from './QueryInterface';
@@ -10,7 +10,7 @@ describe('Assembled Correctly', () =>
 {
     it('For Each Query id in the config, there is a handler established in the container', () =>
     {
-        const bus = container.get<QueryBus>(QueryBus);
+        const bus = diContainer.get<QueryBus>(QueryBus);
 
         queryBusConfig.forEach((configObj: QueryBusConfigInterface) =>
         {
@@ -23,7 +23,7 @@ describe('Registers and Dispatches Querys Correctly', () =>
 {
     it('In the case of properly setup config, dispatches query correctly', () =>
     {
-        const bus = container.get<QueryBus>(QueryBus);
+        const bus = diContainer.get<QueryBus>(QueryBus);
 
         const testQuery: QueryInterface = {
             getQueryId: () =>
@@ -39,7 +39,7 @@ describe('Registers and Dispatches Querys Correctly', () =>
             },
         };
 
-        container.bind('testQueryHandler').toConstantValue(queryHandler);
+        diContainer.bind('testQueryHandler').toConstantValue(queryHandler);
 
         // @ts-ignore
         bus.registerHandlerToQuery(testQuery.getQueryId(), new BusContainerIdServiceResolver('testQueryHandler'));
@@ -49,8 +49,8 @@ describe('Registers and Dispatches Querys Correctly', () =>
 
     it('In the case of Improperly setup config (Handler not Registered), throws an Error on Dispatch', () =>
     {
-        container.rebind(QueryBus).toConstantValue(new QueryBus());
-        const bus = container.get<QueryBus>(QueryBus);
+        diContainer.rebind(QueryBus).toConstantValue(new QueryBus());
+        const bus = diContainer.get<QueryBus>(QueryBus);
 
         const testQuery: QueryInterface = {
             getQueryId: () =>
@@ -67,8 +67,8 @@ describe('Registers and Dispatches Querys Correctly', () =>
 
     it('In the case of Improperly setup config (Handler Already Registered), throws an Error on Register', () =>
     {
-        container.rebind(QueryBus).toConstantValue(new QueryBus());
-        const bus = container.get<QueryBus>(QueryBus);
+        diContainer.rebind(QueryBus).toConstantValue(new QueryBus());
+        const bus = diContainer.get<QueryBus>(QueryBus);
 
         const testQuery: QueryInterface = {
             getQueryId: () =>
@@ -84,7 +84,7 @@ describe('Registers and Dispatches Querys Correctly', () =>
             },
         };
 
-        container.bind('testQueryHandler').toConstantValue(queryHandler);
+        diContainer.bind('testQueryHandler').toConstantValue(queryHandler);
 
         // @ts-ignore
         bus.registerHandlerToQuery(testQuery.getQueryId(), new BusContainerIdServiceResolver('testQueryHandler'));

@@ -11,15 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var inversify_1 = require("inversify");
 var AppConfig = /** @class */ (function () {
-    function AppConfig(environment, primaryListenPort) {
+    function AppConfig(environment, port, dbConnectionUrl) {
         this.environment = environment;
-        this.primaryListenPort = primaryListenPort;
-        if (!environment || !primaryListenPort) {
+        this.port = port;
+        this.dbConnectionUrl = dbConnectionUrl;
+        if (!environment) {
             throw new Error('Cannot launch app. An Env variable is undefined.');
+        }
+        if (!port) {
+            throw new Error('Cannot launch app -- port ENV key is missing');
+        }
+        if (!dbConnectionUrl) {
+            throw new Error('Cannot launch app -- DB Connection URL is missing');
         }
     }
     AppConfig.fromEnvironment = function () {
-        return new this(process.env.APP_ENV, Number(process.env.APP_LISTEN_PORT));
+        return new this(process.env.APP_ENV, Number(process.env.PORT), process.env.DATABASE_URL);
     };
     AppConfig.prototype.inEnvironment = function (env) {
         return this.environment === env;
@@ -29,11 +36,14 @@ var AppConfig = /** @class */ (function () {
         return envs.some(function (env) { return _this.inEnvironment(env); });
     };
     AppConfig.prototype.getPort = function () {
-        return this.primaryListenPort;
+        return this.port;
+    };
+    AppConfig.prototype.getDbConnectionUrl = function () {
+        return this.dbConnectionUrl;
     };
     AppConfig = __decorate([
         inversify_1.injectable(),
-        __metadata("design:paramtypes", [String, Number])
+        __metadata("design:paramtypes", [String, Number, String])
     ], AppConfig);
     return AppConfig;
 }());

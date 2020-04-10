@@ -1,6 +1,6 @@
 import TestableCommandBus from './TestableCommandBus';
 import ServiceId from '../../../DependencyInjection/ServiceId';
-import container from '../../../DependencyInjection/Container/instance';
+import diContainer from '../../../DependencyInjection/Container/instance';
 import CommandInterface from '../CommandInterface';
 import CommandHandlerInterface from '../CommandHandlerInterface';
 import BusInstanceServiceResolver from '../../ServiceResolver/BusInstanceServiceResolver';
@@ -9,7 +9,7 @@ describe('Provides Testing Utilities for the Command Bus', () =>
 {
     it('Command Is Registered to handler Assertion', () =>
     {
-        const commandBus = container.get<TestableCommandBus>(ServiceId.CommandBusInterface);
+        const commandBus = diContainer.get<TestableCommandBus>(ServiceId.CommandBusInterface);
 
         const command: CommandInterface = {
 
@@ -39,7 +39,7 @@ describe('Provides Testing Utilities for the Command Bus', () =>
 
     it('Command Is Registered At all', () =>
     {
-        const commandBus = container.get<TestableCommandBus>(ServiceId.CommandBusInterface);
+        const commandBus = diContainer.get<TestableCommandBus>(ServiceId.CommandBusInterface);
 
         const command: CommandInterface = {
 

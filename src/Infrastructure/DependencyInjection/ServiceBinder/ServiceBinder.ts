@@ -9,6 +9,9 @@ import QueryBusInterface from '../../Bus/QueryBus/QueryBusInterface';
 import TestableCommandBus from '../../Bus/CommandBus/Test/TestableCommandBus';
 import TestableQueryBus from '../../Bus/QueryBus/Test/TestableQueryBus';
 import AppConfig from '../../../Application/Configuration/Appconfig';
+import {
+    getRepository, Repository,
+} from 'typeorm';
 
 class ServiceBinder
 {
@@ -91,6 +94,15 @@ class ServiceBinder
         const appConfig = AppConfig.fromEnvironment();
         container.bind(ServiceId.AppConfig).toConstantValue(appConfig);
         container.bind(AppConfig).toConstantValue(appConfig);
+
+        // Bind Entity Repository Factory
+        container.bind(ServiceId.EntityRepositoryFactory).toFactory<Repository<any>>(() =>
+        {
+            return (entity: any): Repository<any> =>
+            {
+                return getRepository(entity);
+            };
+        });
     }
 }
 

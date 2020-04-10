@@ -38,6 +38,7 @@ var CommandBus = /** @class */ (function () {
             return handler.handle(command);
         }
         catch (e) {
+            console.log(e);
             throw CommandBusDispatchException_1.default.forCommandId(command.getCommandId(), e);
         }
     };

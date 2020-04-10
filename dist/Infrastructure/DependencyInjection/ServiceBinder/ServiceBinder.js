@@ -10,6 +10,7 @@ var QueryBus_1 = __importDefault(require("../../Bus/QueryBus/QueryBus"));
 var TestableCommandBus_1 = __importDefault(require("../../Bus/CommandBus/Test/TestableCommandBus"));
 var TestableQueryBus_1 = __importDefault(require("../../Bus/QueryBus/Test/TestableQueryBus"));
 var Appconfig_1 = __importDefault(require("../../../Application/Configuration/Appconfig"));
+var typeorm_1 = require("typeorm");
 var ServiceBinder = /** @class */ (function () {
     function ServiceBinder(appConfig) {
         if (appConfig === void 0) { appConfig = Appconfig_1.default.fromEnvironment(); }
@@ -66,6 +67,12 @@ var ServiceBinder = /** @class */ (function () {
         var appConfig = Appconfig_1.default.fromEnvironment();
         container.bind(ServiceId_1.default.AppConfig).toConstantValue(appConfig);
         container.bind(Appconfig_1.default).toConstantValue(appConfig);
+        // Bind Entity Repository Factory
+        container.bind(ServiceId_1.default.EntityRepositoryFactory).toFactory(function () {
+            return function (entity) {
+                return typeorm_1.getRepository(entity);
+            };
+        });
     };
     return ServiceBinder;
 }());

@@ -1,7 +1,8 @@
 import ControllerInterface from '../../Infrastructure/Api/Controller/ControllerInterface';
 import express from 'express';
 import AppConfig from '../Configuration/Appconfig';
-import container from '../../Infrastructure/DependencyInjection/Container/instance';
+import diContainer from '../../Infrastructure/DependencyInjection/Container/instance';
+import cors from 'cors';
 
 class Application
 {
@@ -9,20 +10,27 @@ class Application
 
     public constructor(
         controllers: ControllerInterface[],
-        private appConfig: AppConfig = container.get(AppConfig),
+        private appConfig: AppConfig = diContainer.get(AppConfig),
     )
     {
         this.app = express();
-        this.initializeControllers(controllers);
         this.initializeMiddleware();
+        this.initializeControllers(controllers);
     }
 
     private initializeMiddleware(): void
     {
-        // nothing
+        this.app.use(cors());
+        this.app.use(express.json());
+        this.setupStaticFolder();
     }
 
-    private initializeControllers(controllers:     ControllerInterface[]): void
+    private setupStaticFolder(): void
+    {
+        this.app.use(express.static('public'));
+    }
+
+    private initializeControllers(controllers: ControllerInterface[]): void
     {
         controllers.forEach((controller: ControllerInterface) =>
         {
@@ -32,7 +40,6 @@ class Application
 
     public listen(): void
     {
-        console.log(this.appConfig.getPort());
         this.app.listen(this.appConfig.getPort());
     }
 }

@@ -55,6 +55,7 @@ class CommandBus implements CommandBusInterface
         }
         catch (e)
         {
+            console.log(e);
             throw CommandBusDispatchException.forCommandId(command.getCommandId(), e);
         }
     }

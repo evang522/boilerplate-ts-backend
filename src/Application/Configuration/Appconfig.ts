@@ -6,11 +6,22 @@ class AppConfig
     private constructor(
         private environment: ENVIRONMENT,
         private port: number,
+        private dbConnectionUrl: string,
     )
     {
-        if (!environment || !port)
+        if (!environment )
         {
             throw new Error('Cannot launch app. An Env variable is undefined.');
+        }
+
+        if (!port)
+        {
+            throw new Error('Cannot launch app -- port ENV key is missing');
+        }
+
+        if (!dbConnectionUrl)
+        {
+            throw new Error('Cannot launch app -- DB Connection URL is missing');
         }
     }
 
@@ -19,6 +30,7 @@ class AppConfig
         return new this(
             process.env.APP_ENV as ENVIRONMENT,
             Number(process.env.PORT),
+            process.env.DATABASE_URL as string,
         );
     }
 
@@ -35,6 +47,11 @@ class AppConfig
     public getPort(): number
     {
         return this.port;
+    }
+
+    public getDbConnectionUrl(): string
+    {
+        return this.dbConnectionUrl;
     }
 }
 

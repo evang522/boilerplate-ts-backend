@@ -1,5 +1,5 @@
 import ContainerLoader from './ContainerLoader';
 
-const container = ContainerLoader.load();
+const diContainer = ContainerLoader.load();
 
-export default container;
+export default diContainer;

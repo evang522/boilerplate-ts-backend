@@ -1,6 +1,6 @@
 class ExtendableError extends Error
 {
-    constructor(message: string)
+    public constructor(message: string)
     {
         super(message);
         this.name = this.constructor.name;

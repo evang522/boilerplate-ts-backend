@@ -1,4 +1,4 @@
-import container from '../../DependencyInjection/Container/instance';
+import diContainer from '../../DependencyInjection/Container/instance';
 import EventBus from './EventBus';
 import EventBusConfigInterface from './config/EventBusConfigInterface';
 import eventBusConfig from './config';
@@ -9,7 +9,7 @@ describe('Assembled Correctly', () =>
 {
     it('For Each Command id in the config, there is an instance established in the container', () =>
     {
-        const bus = container.get<EventBus>(EventBus);
+        const bus = diContainer.get<EventBus>(EventBus);
 
         eventBusConfig.forEach((configObj: EventBusConfigInterface) =>
         {
@@ -22,7 +22,7 @@ describe('Registers and Dispatches Commands Correctly', () =>
 {
     it('In the case of properly setup config, dispatches event correctly', () =>
     {
-        const bus = container.get<EventBus>(EventBus);
+        const bus = diContainer.get<EventBus>(EventBus);
         const spyFunction = jest.fn();
         const testEvent: EventInterface = {
             getEventId: () =>
@@ -38,7 +38,7 @@ describe('Registers and Dispatches Commands Correctly', () =>
             },
         };
 
-        container.bind('testEventHandler').toConstantValue(eventHandler);
+        diContainer.bind('testEventHandler').toConstantValue(eventHandler);
 
         // @ts-ignore
         bus.registerHandlerToEvent(testEvent.getEventId(), 'testEventHandler');
@@ -50,8 +50,8 @@ describe('Registers and Dispatches Commands Correctly', () =>
 
     it('In the case of the Handler not being registered in container, throws an Error on register', () =>
     {
-        container.rebind(EventBus).toConstantValue(new EventBus(container));
-        const bus = container.get<EventBus>(EventBus);
+        diContainer.rebind(EventBus).toConstantValue(new EventBus(diContainer));
+        const bus = diContainer.get<EventBus>(EventBus);
 
         const testEvent: EventInterface = {
             getEventId: () =>

@@ -1,4 +1,23 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": true,
+    "jest": true
+  },
+  "globals": {
+    "expect": true,
+    "sinon": true,
+    "__DEV__": true
+  },
   "rules": {
     "no-var": 2,
     "prefer-const": 2,
@@ -17,6 +36,7 @@
       2,
       "always"
     ],
+    "no-console": 2,
     "no-debugger": 1,
     "no-alert": 1,
     "no-constant-condition": 1,
@@ -187,10 +207,6 @@
         ]
       }
     ],
-    "jsx-quotes": [
-      2,
-      "prefer-double"
-    ],
     "object-curly-newline": [
       "error", {
         "ObjectExpression": {
@@ -220,6 +236,12 @@
         "allowAllPropertiesOnSameLine": false
       }
     ],
+    "array-bracket-newline": [
+      "error", {
+        "multiline": true,
+        "minItems": 2
+      }
+    ],
     "array-bracket-spacing": [
       "error",
       "always"
@@ -233,11 +255,17 @@
         "next": "return"
       }
     ],
+    "no-magic-numbers": [
+      "warn",
+      {
+        "ignore": [0,1,2,3,4,5,6,7,8,9,10,100]
+      }
+    ],
     "no-confusing-arrow": "warn",
-    // rules which we temporarily set to warnings, but should be reconsidered
     "@typescript-eslint/camelcase": 0,
     "@typescript-eslint/ban-ts-ignore": 1,
     "@typescript-eslint/no-non-null-assertion": 0,
+
     "@typescript-eslint/interface-name-prefix": 0,
     "dot-notation":"off",
     "semi": "warn",

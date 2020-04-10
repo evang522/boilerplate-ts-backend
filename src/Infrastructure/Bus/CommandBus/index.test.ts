@@ -1,4 +1,4 @@
-import container from '../../DependencyInjection/Container/instance';
+import diContainer from '../../DependencyInjection/Container/instance';
 import CommandBus from './CommandBus';
 import CommandBusConfigInterface from './config/CommandBusConfigInterface';
 import CommandInterface from './CommandInterface';
@@ -10,7 +10,7 @@ describe('Assembled Correctly', () =>
 {
     it('For Each Command id in the config, there is an instance established in the container', () =>
     {
-        const bus = container.get<CommandBus>(CommandBus);
+        const bus = diContainer.get<CommandBus>(CommandBus);
 
         commandBusConfig.forEach((configObj: CommandBusConfigInterface) =>
         {
@@ -23,7 +23,7 @@ describe('Registers and Dispatches Commands Correctly', () =>
 {
     it('In the case of properly setup config, dispatches command correctly', () =>
     {
-        const bus = container.get<CommandBus>(CommandBus);
+        const bus = diContainer.get<CommandBus>(CommandBus);
 
         const testCommand: CommandInterface = {
             getCommandId: () =>
@@ -39,7 +39,7 @@ describe('Registers and Dispatches Commands Correctly', () =>
             },
         };
 
-        container.bind('testCommandHandler').toConstantValue(commandHandler);
+        diContainer.bind('testCommandHandler').toConstantValue(commandHandler);
 
         bus.registerHandlerToCommand(
             testCommand.getCommandId(),
@@ -52,8 +52,8 @@ describe('Registers and Dispatches Commands Correctly', () =>
 
     it('In the case of Improperly setup config (Handler not Registered), throws an Error on Dispatch', () =>
     {
-        container.rebind(CommandBus).toConstantValue(new CommandBus());
-        const bus = container.get<CommandBus>(CommandBus);
+        diContainer.rebind(CommandBus).toConstantValue(new CommandBus());
+        const bus = diContainer.get<CommandBus>(CommandBus);
 
         const testCommand: CommandInterface = {
             getCommandId: () =>
@@ -70,8 +70,8 @@ describe('Registers and Dispatches Commands Correctly', () =>
 
     it('In the case of Improperly setup config (Handler Already Registered), throws an Error on Register', () =>
     {
-        container.rebind(CommandBus).toConstantValue(new CommandBus());
-        const bus = container.get<CommandBus>(CommandBus);
+        diContainer.rebind(CommandBus).toConstantValue(new CommandBus());
+        const bus = diContainer.get<CommandBus>(CommandBus);
 
         const testCommand: CommandInterface = {
             getCommandId: () =>
@@ -87,7 +87,7 @@ describe('Registers and Dispatches Commands Correctly', () =>
             },
         };
 
-        container.bind('testCommandHandler').toConstantValue(commandHandler);
+        diContainer.bind('testCommandHandler').toConstantValue(commandHandler);
 
         // @ts-ignore
         bus.registerHandlerToCommand(testCommand.getCommandId(), new BusContainerIdServiceResolver('testCommandHandler'));

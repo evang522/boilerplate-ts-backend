@@ -1,6 +1,6 @@
 import TestableQueryBus from './TestableQueryBus';
 import ServiceId from '../../../DependencyInjection/ServiceId';
-import container from '../../../DependencyInjection/Container/instance';
+import diContainer from '../../../DependencyInjection/Container/instance';
 import QueryInterface from '../QueryInterface';
 import QueryHandlerInterface from '../QueryHandlerInterface';
 import BusInstanceServiceResolver from '../../ServiceResolver/BusInstanceServiceResolver';
@@ -9,7 +9,7 @@ describe('Provides Testing Utilities for the query Bus', () =>
 {
     it('query Is Registered to handler Assertion', () =>
     {
-        const queryBus = container.get<TestableQueryBus>(ServiceId.QueryBusInterface);
+        const queryBus = diContainer.get<TestableQueryBus>(ServiceId.QueryBusInterface);
 
         const query: QueryInterface = {
 
@@ -36,7 +36,7 @@ describe('Provides Testing Utilities for the query Bus', () =>
 
     it('query Is Registered At all', () =>
     {
-        const queryBus = container.get<TestableQueryBus>(ServiceId.QueryBusInterface);
+        const queryBus = diContainer.get<TestableQueryBus>(ServiceId.QueryBusInterface);
 
         const query: QueryInterface = {
 
