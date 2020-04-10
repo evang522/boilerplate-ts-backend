@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  foxbox_backend:
+    container_name: foxbox_backend
+    build: ./.docker/node
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: development
+      PORT: 8000
+    command: "npm run dev"
+    networks:
+      foxbox-backend:
+        ipv4_address: 10.240.0.2
+    depends_on:
+      - pgsql
+  pgsql:
+    container_name: pgsql
+    build: ./.docker/db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: postgresql
+    volumes:
+      - /var/lib/postgresql/data
+    networks:
+      foxbox-backend:
+        ipv4_address: 10.240.0.3
+      foxbox:
+
+networks:
+  foxbox-backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.240.0.0/24"
+  foxbox:
+    external: true
+
+
